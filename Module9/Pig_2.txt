@@ -1,0 +1,58 @@
+pig -x local;
+
+records = LOAD '/home/edureka/01feb/data/pig_localtest.txt' AS (name:chararray, count:int);
+dump records;
+
+STORE toPrint INTO '/home/edureka/08feb/output/pig/one';
+
+toPrint = LIMIT records 2;
+dump toPrint;
+
+
+
+Input
+~~~~~
+
+en google.com 52 100
+en yahoo.com 60 100
+us google.com 70 100
+en google.com 68 100
+us twitter.com 60 100
+us google.com 70 100
+en facebook.com 68 100
+en google.com 50 100
+en facebook.com 72 100
+
+
+en google.com 52 100
+en google.com 68 100
+en google.com 50 100
+
+
+records = LOAD '/home/edureka/01feb/data/pig_webcount.txt' using PigStorage(' ') as  (projectname:chararray, pagename:chararray, pagecount:int,pagesize:int);
+
+
+filtered_records = FILTER records by projectname=='en';
+describe filtered_records;
+
+grouped_records = GROUP filtered_records by pagename;     
+describe grouped_records;
+
+results = FOREACH grouped_records generate group,SUM(filtered_records.pagecount);
+
+sorted_result = ORDER results by $1 desc;
+STORE sorted_result INTO '/home/edureka/python/04jun/pigoutput';
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/home/edureka/01feb/data/pig_student.tsv
+
+Register '/home/edureka/python/data/py_udf.py' using jython as myfuncs;
+
+
+A = LOAD '/home/edureka/01feb/data/pig_student.tsv' AS (name: chararray, age: int, gpa: float);
+B = foreach A generate myfuncs.helloworld(), myfuncs.square(gpa);
+
+dump B
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

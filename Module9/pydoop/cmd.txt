@@ -1,0 +1,1 @@
+pydoop script -c combiner wordcount.py /mybook.txt /pydoopout/04jun/wc1

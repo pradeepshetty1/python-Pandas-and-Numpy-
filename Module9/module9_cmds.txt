@@ -1,0 +1,11 @@
+hdfs dfs -mkdir -p /python/data
+
+cd /home/edureka/python/data/
+
+hdfs dfs -put stadiums.csv /python/data/stadiums.csv
+
+
+hadoop  jar /usr/lib/hadoop-2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar -input /python/data/stadiums.csv -output /home/edureka/python/may01/pymapper1 -mapper "python /home/edureka/python/data/mapper.py" -reducer "python /home/edureka/python/data/reducer.py"
+
+
+

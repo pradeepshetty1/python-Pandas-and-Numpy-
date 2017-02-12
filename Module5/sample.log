@@ -1,0 +1,7 @@
+DEBUG:root:To log file
+INFO:root:message 1
+WARNING:root:message 2
+ERROR:root:Error message 2
+DEBUG:root:Name test with name as debug0
+WARNING:root:message 2
+ERROR:root:Error message 2

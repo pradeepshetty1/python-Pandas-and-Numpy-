@@ -1,0 +1,5 @@
+1,muthukumar, 800000, IT
+2,ram,900000,ADMIN
+3,geetha,800000,IT
+4,ramya,800000,ADMIN
+5,nila,700000,SUPPORT

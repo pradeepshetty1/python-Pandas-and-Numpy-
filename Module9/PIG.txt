@@ -1,0 +1,54 @@
+PIG
+	hduser@codeisland:/usr/local/hadoop$ pig
+	grunt> ls;
+
+	## Browsing HDFS
+	grunt> ls /user/hduser/data;
+	grunt> cat /user/hduser/data/stadiums.csv;
+	grunt> quit;
+
+    ## read file from hdfs, data gets stored as relational dbms
+	grunt> table_A = LOAD '/user/masteringpython/sepoct15/data/foo.txt' AS (name:chararray,x:int,y:int);
+
+    ## default datatype is bytearray.
+	grunt> describe table_A;
+
+	grunt> dump table_A;
+
+    ## such selects do not work in PIG, follow next statement
+	grunt> select * from table_A;
+
+	grunt> selectstart = foreach table_A generate name,x,y
+	grunt> dump selectstart;
+
+	grunt> R = foreach table_A generate x,y,x-y
+	grunt> dump R;
+
+	## $0 is first column, followed by $1, $2 and so on
+	grunt> L = foreach table_A generate $1,$2,$2-1
+	grunt> dump L;
+
+    ## filter data
+	grunt> filterdata = filter table_A by x>20;
+	grunt> dump filterdata;
+
+	## PIGSTORAGE examples : ensure files u.data and stadiums are under /tmp HDFS dir as it wont refer local file under OS /tmp dir
+	grunt> movie_data = LOAD '/tmp/u.data' USING PigStorage('\t');
+	grunt> dump movie_data;
+
+	grunt> stadiums = LOAD '/tmp/stadiums' USING PigStorage(',');
+	grunt> dump stadiums;
+
+	grunt> turfs = foreach stadiums generate $4;
+	grunt> dump turfs;
+
+    ## registering files in distributed cache
+	grunt> register '/home/codeisland/Desktop/mr/production.py' using jython as add2param;
+
+	## if the script  <production.py> in this case is already registered, it throws up an error
+	## either create a new script by different name or register same script with different alias
+
+	grunt> c = foreach table_A generate add2param.production(x,y);
+	grunt> dump c;
+
+	grunt> quit;

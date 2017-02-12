@@ -1,0 +1,64 @@
+Hive : 
+
+Environment settings : export HADOOP_USER_CLASSPATH_FIRST=true
+
+hive
+
+show databases;
+
+create database if not exists jun04;
+
+describe database jun04;
+
+use jun04;
+
+create table emp(name string, salary float,dep string)
+row format delimited
+fields terminated by ',';
+
+load data local inpath '/home/edureka/01feb/data/hive_emp.txt' into table emp;
+
+
+
+show tables;
+select * from emp;
+
+describe emp;
+
+describe formatted emp;
+
+select count(*) from emp; 
+(runs MR jobs for aggregation)
+
+select sum(salary) from emp; 
+(runs MR jobs for aggregation)
+
+Using Python with Hive:
+```````````````````````
+
+CREATE TABLE u_data ( userid INT, movieid INT, rating INT, unixtime STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE;
+
+LOAD DATA LOCAL INPATH '/home/edureka/python/data/u.data' OVERWRITE INTO TABLE u_data;
+
+SELECT userid, movieid, rating, unixtime from u_data limit 10;
+
+add file /home/edureka/python/data/weekday_mapper.py;
+
+SELECT TRANSFORM (userid, movieid, rating, unixtime) USING 'python weekday_mapper.py' AS (userid, movieid, rating, weekday) FROM u_data order by userid limit 10;
+
+
+CREATE TABLE u_data_new (userid INT, movieid INT, rating INT, weekday INT) 
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY '\t';
+
+INSERT OVERWRITE TABLE u_data_new SELECT 
+TRANSFORM (userid, movieid, rating, unixtime) 
+USING 'python weekday_mapper.py' 
+AS (userid, movieid, rating, weekday) 
+FROM u_data;
+
+select count(*) from u_data_new GROUP BY weekday;
+
+
+Syntax : Transform(cols) Using (Python mapper)
+
