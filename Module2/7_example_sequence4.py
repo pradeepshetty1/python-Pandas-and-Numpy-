@@ -1,13 +1,12 @@
 nameList = ["kumar", "muthu"]
 nameList = nameList + ["varun", "vamsi"]
 
-print nameList
+print(nameList)
 
 nameList = nameList * 3
 
-print nameList
+print(nameList)
 
-print ''.join(nameList)
+print(''.join(nameList))
 
-print ' '.join(nameList)
-
+print(' '.join(nameList))
